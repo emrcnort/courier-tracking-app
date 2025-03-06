@@ -9,8 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,8 +34,9 @@ public class StoreLoader {
 
     private List<Store> loadFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
-        try (InputStream inputStream = getClass().getResourceAsStream("/stores.json")) {
-            return objectMapper.readValue(inputStream, new TypeReference<List<Store>>() {});
+        try  {
+            File file = Paths.get("stores.json").toFile();
+            return objectMapper.readValue(file, new TypeReference<List<Store>>() {});
         } catch (IOException e) {
             e.printStackTrace();
             return Collections.emptyList();
