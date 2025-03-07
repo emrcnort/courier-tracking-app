@@ -1,4 +1,4 @@
-package com.ortakciemrecan.config;
+package com.ortakciemrecan.common.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;

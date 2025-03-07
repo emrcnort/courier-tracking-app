@@ -1,4 +1,4 @@
-package com.ortakciemrecan.service;
+package com.ortakciemrecan.common.service;
 
 import org.springframework.stereotype.Service;
 

@@ -16,7 +16,7 @@ spring:
           json:
             value:
               default:
-                type: com.ortakciemrecan.dto.CourierLocationEvent
+                type: com.ortakciemrecan.courier.dto.CourierLocationEvent
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

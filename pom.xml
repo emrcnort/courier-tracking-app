@@ -21,6 +21,7 @@
         <lombok.version>1.18.24</lombok.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
+        <jakarta.validation.api.version>3.0.2</jakarta.validation.api.version>
     </properties>
 
     <dependencies>
@@ -87,6 +88,12 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+        <dependency>
+        <groupId>jakarta.validation</groupId>
+        <artifactId>jakarta.validation-api</artifactId>
+        <version>${jakarta.validation.api.version}</version>
+    </dependency>
 
     </dependencies>
 

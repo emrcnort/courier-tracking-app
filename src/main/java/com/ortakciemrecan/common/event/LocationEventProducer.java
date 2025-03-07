@@ -1,6 +1,6 @@
-package com.ortakciemrecan.event;
+package com.ortakciemrecan.common.event;
 
-import com.ortakciemrecan.dto.CourierLocationEvent;
+import com.ortakciemrecan.courier.dto.CourierLocationEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,6 @@ public class LocationEventProducer {
 
     private final KafkaTemplate<String, CourierLocationEvent> kafkaTemplate;
     public void sendEvent(CourierLocationEvent event) {
-        kafkaTemplate.send("courier-location-events", event.getCourierId().toString(), event);
+        kafkaTemplate.send("courier-location-events", event.courierId().toString(), event);
     }
 }

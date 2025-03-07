@@ -1,4 +1,4 @@
-package com.ortakciemrecan.dto;
+package com.ortakciemrecan.courier.dto;
 
 import java.time.LocalDateTime;
 public record CourierLocationRequest(
