@@ -29,5 +29,5 @@ public class CourierStoreEntryLog {
     private LocalDateTime entranceTime;
 
     @Column(name = "total_entrance", nullable = false)
-    private Integer totalEntrance;
+    private Double totalEntrance;
 }

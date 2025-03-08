@@ -21,4 +21,7 @@ public class Courier {
     @NotNull
     private Long employeeNumber;
 
+    @Column(name = "is_active")
+    private Boolean isActive = Boolean.TRUE;
+
 }

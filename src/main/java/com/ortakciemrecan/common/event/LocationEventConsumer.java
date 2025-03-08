@@ -1,5 +1,7 @@
 package com.ortakciemrecan.common.event;
 
+import com.ortakciemrecan.common.exception.CourierNotExistException;
+import com.ortakciemrecan.common.exception.StoreNotExistException;
 import com.ortakciemrecan.common.service.HaversineDistanceCalculator;
 import com.ortakciemrecan.courier.dto.CourierLocationEvent;
 import com.ortakciemrecan.courier.entity.Courier;
@@ -30,11 +32,17 @@ public class LocationEventConsumer {
     private final StoreService storeService;
     private final CourierService courierService;
 
-    @KafkaListener(topics = "courier-location-events", groupId = "courier-tracking-group")
+    @KafkaListener(topics = "${vars.location-events.topic}", groupId = "${vars.location-events.group-id}")
     public void consume(CourierLocationEvent event) {
         storeLoader.getStores().stream()
                 .filter(storeDto -> isWithinRadius(event, storeDto, 100))
-                .forEach(storeDto -> processEntry(event, storeDto));
+                .forEach(storeDto -> {
+                    try {
+                        processEntry(event, storeDto);
+                    } catch (CourierNotExistException | StoreNotExistException e) {
+                        log.error(e.getLocalizedMessage());
+                    }
+                });
     }
 
     private boolean isWithinRadius(CourierLocationEvent event, StoreDto storeDto, double radiusMeters) {
@@ -45,14 +53,14 @@ public class LocationEventConsumer {
         return distance <= radiusMeters;
     }
 
-    private void processEntry(CourierLocationEvent event, StoreDto storeDto) {
+    private void processEntry(CourierLocationEvent event, StoreDto storeDto) throws CourierNotExistException, StoreNotExistException {
         String key = generateRedisKey(event.courierId(), storeDto.getName());
 
-        if (!Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
 
             Courier courier = courierService.getReferenceById(event.courierId());
             Store store = storeService.getStoreByName(storeDto.getName());
-            int totalEntrance = logService.getTotalEntranceByCourierIdAndStoreName(courier.getId(), store.getName());
+            double totalEntrance = logService.getTotalEntranceByCourierId(courier.getId());
 
             redisTemplate.opsForValue().set(key, "entered", 60, TimeUnit.SECONDS);
             CourierStoreEntryLog courierStoreEntryLog = new CourierStoreEntryLog();
@@ -66,6 +74,5 @@ public class LocationEventConsumer {
     }
 
     private String generateRedisKey(Long courierId, String storeName) {
-        return "courier:" + courierId + ":store:" + storeName;
-    }
+        return String.format("courier:%d:store:%s", courierId, storeName);    }
 }
