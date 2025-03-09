@@ -1,10 +1,6 @@
-# Save the formatted README content as a markdown file
-
-readme_content = """# Courier Management System
+# Courier Tracking App
 
 This project is a **Courier Management System** developed using Spring Boot. It provides various APIs to manage courier information, track locations, and calculate distances.
-
-![Courier Management System](path/to/image.png)
 
 ## Table of Contents
 
