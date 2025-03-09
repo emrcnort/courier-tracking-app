@@ -17,7 +17,7 @@ public class Courier {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "employee_number", updatable = false, nullable = false)
     @NotNull
     private Long employeeNumber;
 

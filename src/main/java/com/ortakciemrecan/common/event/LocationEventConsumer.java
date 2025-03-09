@@ -10,7 +10,6 @@ import com.ortakciemrecan.courier.service.CourierService;
 import com.ortakciemrecan.courier.service.CourierStoreEntryLogService;
 import com.ortakciemrecan.store.dto.StoreDto;
 import com.ortakciemrecan.store.entity.Store;
-import com.ortakciemrecan.store.service.StoreLoader;
 import com.ortakciemrecan.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LocationEventConsumer {
     private final RedisTemplate<String, String> redisTemplate;
-    private final StoreLoader storeLoader;
     private final HaversineDistanceCalculator calculator;
     private final CourierStoreEntryLogService logService;
     private final StoreService storeService;
@@ -34,7 +32,7 @@ public class LocationEventConsumer {
 
     @KafkaListener(topics = "${vars.location-events.topic}", groupId = "${vars.location-events.group-id}")
     public void consume(CourierLocationEvent event) {
-        storeLoader.getStores().stream()
+        storeService.getStores().stream()
                 .filter(storeDto -> isWithinRadius(event, storeDto, 100))
                 .forEach(storeDto -> {
                     try {

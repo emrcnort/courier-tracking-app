@@ -9,7 +9,7 @@ import com.ortakciemrecan.courier.dto.CourierLocationEvent;
 import com.ortakciemrecan.courier.dto.CourierRequest;
 import com.ortakciemrecan.courier.entity.Courier;
 import com.ortakciemrecan.courier.repository.CourierRepository;
-import com.ortakciemrecan.courier.utils.CourierMapper;
+import com.ortakciemrecan.courier.util.CourierMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

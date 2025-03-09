@@ -6,7 +6,6 @@ import com.ortakciemrecan.store.dto.StoreDto;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -19,17 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class StoreLoader {
-    private final RedisTemplate<String, Object> redisTemplate;
-    private static final String STORE_KEY = "stores";
+    private final StoreService storeService;
     @PostConstruct
     public void loadStores() {
-        List<StoreDto> storeDtos = loadFromJson();
-        redisTemplate.opsForValue().set(STORE_KEY, storeDtos);
+        List<StoreDto> stores = loadFromJson();
+        storeService.saveAll(stores);
     }
-    public List<StoreDto> getStores() {
-        return (List<StoreDto>) redisTemplate.opsForValue().get(STORE_KEY);
-    }
-
 
     private List<StoreDto> loadFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
