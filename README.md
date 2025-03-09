@@ -10,8 +10,6 @@ This project is a **Courier Management System** developed using Spring Boot. It 
 4. [Running the Application](#running-the-application)
 5. [API Endpoints](#api-endpoints)
 6. [Swagger Documentation](#swagger-documentation)
-7. [Contributing](#contributing)
-8. [License](#license)
 
 ## Introduction
 
