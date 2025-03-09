@@ -24,6 +24,8 @@ Before you begin, ensure you have met the following requirements:
 - Docker (for containerization)
 - Kafka (for event processing)
 - Redis (for caching)
+- PostgreSQL
+
 
 ## Installation
 
