@@ -36,8 +36,8 @@ Before you begin, ensure you have met the following requirements:
 1. **Clone the Repository**
 
     ```bash
-    git clone https://github.com/yourusername/courier-management-system.git
-    cd courier-management-system
+    git clone https://github.com/emrcnort/courier-tracking-app.git
+    cd courier-tracking-app
     ```
 
 2. **Build the Project**
@@ -60,3 +60,87 @@ To run the application, use the following command:
 mvn spring-boot:run
 ```
 The application will be available at http://localhost:8080.
+
+# API Endpoints
+
+## Get Total Distance
+
+**Endpoint:** `/api/v1/couriers/total-distances/{courier-id}`
+
+**Method:** `GET`
+
+**Description:** Get the total distance covered by a courier.
+
+**Response:** `CourierDistanceDto`
+
+```json
+{
+  "courierId": 1,
+  "totalDistance": 125.5
+}
+```
+
+## Update Courier Location
+
+**Endpoint:** `/api/v1/couriers/location`
+
+**Method:** `POST`
+
+**Description:** Update the location of a courier.
+
+**Response:** `CourierLocationEvent`
+
+```json
+{
+  "courierId": 1,
+  "latitude": 40.7128,
+  "longitude": -74.0060,
+  "timestamp": "2025-03-09T12:00:00Z"
+}
+```
+
+## Get Couriers with Pagination
+
+**Endpoint:** `/api/v1/couriers`
+
+**Method:** `GET`
+
+**Description:**  Get a list of couriers with pagination.
+
+**Query Parameters:** page, size
+
+**Response:** `Page<CourierDto>`
+
+```json
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "employeeNumber": 12345,
+    "isActive": true
+  }
+]
+```
+
+## Save or Update Courier
+
+**Endpoint:** `/api/v1/couriers`
+
+**Method:** `POST`
+
+**Description:**  Save or update a courier.
+
+**Request:** `CourierRequest`
+
+```json
+{
+  "name": "Jane Doe",
+  "employeeNumber": 67890,
+  "isActive": true
+}
+```
+
+# Swagger Documentation
+To access the Swagger UI for API documentation, navigate to:
+
+http://localhost:8080/swagger-ui.html
