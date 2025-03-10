@@ -71,8 +71,7 @@ The application will be available at http://localhost:8080.
 
 ```json
 {
-  "courierId": 1,
-  "totalDistance": 125.5
+  "totalKilometers": 1
 }
 ```
 
@@ -84,13 +83,13 @@ The application will be available at http://localhost:8080.
 
 **Description:** Update the location of a courier.
 
-**Response:** `CourierLocationEvent`
+**Request:** `CourierLocationEvent`
 
 ```json
 {
   "courierId": 1,
-  "latitude": 40.7128,
-  "longitude": -74.0060,
+  "lat": 40.7128,
+  "lng": -74.0060,
   "timestamp": "2025-03-09T12:00:00Z"
 }
 ```
@@ -131,8 +130,7 @@ The application will be available at http://localhost:8080.
 ```json
 {
   "name": "Jane Doe",
-  "employeeNumber": 67890,
-  "isActive": true
+  "employeeNumber": 67890
 }
 ```
 

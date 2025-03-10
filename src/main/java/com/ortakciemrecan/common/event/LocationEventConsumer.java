@@ -55,22 +55,43 @@ public class LocationEventConsumer {
         String key = generateRedisKey(event.courierId(), storeDto.getName());
 
         if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
-
-            Courier courier = courierService.getReferenceById(event.courierId());
-            Store store = storeService.getStoreByName(storeDto.getName());
+            Courier courier = fetchCourier(event.courierId());
+            Store store = fetchStore(storeDto.getName());
             double totalEntrance = logService.getTotalEntranceByCourierId(courier.getId());
 
-            redisTemplate.opsForValue().set(key, "entered", 60, TimeUnit.SECONDS);
-            CourierStoreEntryLog courierStoreEntryLog = new CourierStoreEntryLog();
-            courierStoreEntryLog.setCourier(courier);
-            courierStoreEntryLog.setStore(store);
-            courierStoreEntryLog.setEntranceTime(LocalDateTime.now());
-            courierStoreEntryLog.setTotalEntrance(totalEntrance);
-            logService.save(courierStoreEntryLog);
-            log.info("Courier {} entered store {}.", event.courierId(), storeDto.getName());
+            markAsEntered(key);
+            logEntry(event.courierId(), storeDto.getName(), courier, store, totalEntrance);
         }
     }
 
+    private Courier fetchCourier(Long courierId) throws CourierNotExistException {
+        return courierService.getReferenceById(courierId);
+    }
+
+    private Store fetchStore(String storeName) throws StoreNotExistException {
+        return storeService.getStoreByName(storeName);
+    }
+
+    private void markAsEntered(String key) {
+        redisTemplate.opsForValue().set(key, "entered", 60, TimeUnit.SECONDS);
+    }
+
+    private void logEntry(Long courierId, String storeName, Courier courier, Store store, double totalEntrance) {
+        CourierStoreEntryLog courierStoreEntryLog = createLogEntry(courier, store, totalEntrance);
+        logService.save(courierStoreEntryLog);
+        log.info("Courier {} entered store {}.", courierId, storeName);
+    }
+
+    private CourierStoreEntryLog createLogEntry(Courier courier, Store store, double totalEntrance) {
+        CourierStoreEntryLog courierStoreEntryLog = new CourierStoreEntryLog();
+        courierStoreEntryLog.setCourier(courier);
+        courierStoreEntryLog.setStore(store);
+        courierStoreEntryLog.setEntranceTime(LocalDateTime.now());
+        courierStoreEntryLog.setTotalEntrance(totalEntrance);
+        return courierStoreEntryLog;
+    }
+
     private String generateRedisKey(Long courierId, String storeName) {
-        return String.format("courier:%d:store:%s", courierId, storeName);    }
+        return String.format("courier:%d:store:%s", courierId, storeName);
+    }
 }
